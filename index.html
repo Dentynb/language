@@ -3,25 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <title>Multibahasa dengan Bendera</title>
-
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 50px;
     }
 
-    /* Sembunyikan elemen Google Translate yang tidak perlu */
-    .goog-te-banner-frame.skiptranslate,
-    .goog-logo-link,
-    .goog-te-gadget span {
-      display: none !important;
-    }
-
-    body {
-      top: 0 !important;
-    }
-
-    /* Posisi dan gaya bendera */
     .lang-switch {
       position: fixed;
       top: 10px;
@@ -43,30 +30,39 @@
       transform: scale(1.1);
     }
 
-    /* Jangan display: none, tapi sembunyikan secara visual */
+    .goog-te-banner-frame.skiptranslate,
+    .goog-logo-link,
+    .goog-te-gadget span {
+      display: none !important;
+    }
+
+    body {
+      top: 0 !important;
+    }
+
     #google_translate_element {
-      height: 0;
-      overflow: hidden;
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+      z-index: 9999;
+      opacity: 0;
     }
   </style>
 </head>
 <body>
 
-  <!-- Tombol Bendera -->
   <div class="lang-switch">
     <img src="https://flagcdn.com/w40/id.png" onclick="translateLang('id')" alt="Bahasa Indonesia">
     <img src="https://flagcdn.com/w40/gb.png" onclick="translateLang('en')" alt="English">
   </div>
 
-  <!-- Google Translate Element -->
   <div id="google_translate_element"></div>
 
-  <!-- Konten -->
   <h1>Selamat datang di Website Kami</h1>
   <p>Kami menyediakan produk berkualitas tinggi untuk kebutuhan pertanian Anda.</p>
   <p>Silakan hubungi kami jika ada pertanyaan lebih lanjut.</p>
 
-  <!-- Script Google Translate -->
+  <!-- Google Translate Script -->
   <script type="text/javascript">
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({
@@ -77,21 +73,20 @@
     }
 
     function translateLang(lang) {
-      const tryTranslate = () => {
-        const select = document.querySelector('.goog-te-combo');
+      const interval = setInterval(() => {
+        const select = document.querySelector('select.goog-te-combo');
         if (select) {
           select.value = lang;
           select.dispatchEvent(new Event('change'));
-        } else {
-          // Coba lagi setelah 100ms jika belum muncul
-          setTimeout(tryTranslate, 100);
+          clearInterval(interval);
         }
-      };
-      tryTranslate();
+      }, 300); // cek tiap 300ms
     }
   </script>
 
-  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <script type="text/javascript"
+    src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+  </script>
 
 </body>
 </html>
